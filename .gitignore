@@ -11,3 +11,6 @@ cover-*.jpg
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Log da sincronizacao automatica
+.sync.log
