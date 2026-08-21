@@ -1,0 +1,640 @@
+<title>DVOps One</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --bg:#ffffff;
+    --bg-alt:#f5f7fa;         /* cool light-gray band */
+    --surface:#ffffff;
+    --ink:#0c1a3d;            /* navy — logo, dark bands, footer */
+    --ink-2:#0a1631;
+    --text:#141b2e;
+    --muted:#59627a;
+    --line:#e6eaf1;
+    --accent:#1e56e6;         /* corporate blue — interactive accent */
+    --accent-ink:#1743b8;     /* darker for hover / on-light text */
+    --brand-blue:#1f5eff;     /* logo V / One (kept faithful to logo) */
+    --logo-fg:#0c1a3d;
+
+    --shadow-sm:0 1px 2px rgba(12,26,61,.06);
+    --shadow:0 2px 6px rgba(12,26,61,.05), 0 18px 40px -24px rgba(12,26,61,.22);
+    --radius:12px;
+    --maxw:1200px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:#0a1226;
+      --bg-alt:#0d1730;
+      --surface:#0f1a37;
+      --ink:#060d1e;
+      --ink-2:#04091a;
+      --text:#e9edf7;
+      --muted:#9aa5c2;
+      --line:#22304f;
+      --accent:#4f7cff;
+      --accent-ink:#7ea0ff;
+      --logo-fg:#eef2fb;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+      --shadow:0 2px 6px rgba(0,0,0,.4), 0 22px 48px -26px rgba(0,0,0,.75);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0a1226; --bg-alt:#0d1730; --surface:#0f1a37; --ink:#060d1e; --ink-2:#04091a;
+    --text:#e9edf7; --muted:#9aa5c2; --line:#22304f; --accent:#4f7cff; --accent-ink:#7ea0ff;
+    --logo-fg:#eef2fb; --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow:0 2px 6px rgba(0,0,0,.4), 0 22px 48px -26px rgba(0,0,0,.75);
+  }
+
+  /* ============ BASE ============ */
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:"Source Sans 3",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    font-size:17.5px;line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:"Archivo","Source Sans 3",sans-serif;font-weight:700;line-height:1.1;letter-spacing:-.012em;text-wrap:balance;margin:0;color:var(--text)}
+  p{margin:0}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .kicker{font-family:"Archivo",sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+  /* ============ LOGO ============ */
+  .logo{display:inline-flex;align-items:baseline;gap:.12em;font-family:"Archivo",sans-serif;line-height:1;user-select:none}
+  .logo .word{font-weight:800;letter-spacing:-.01em;color:var(--logo-fg);font-size:1.5rem}
+  .logo .v{background:linear-gradient(92deg,var(--logo-fg) 0 48%,var(--brand-blue) 48% 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .logo .one{font-weight:700;font-size:.8rem;color:var(--brand-blue);letter-spacing:0;transform:translateY(-.02em)}
+
+  /* ============ BUTTONS ============ */
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:"Archivo",sans-serif;font-weight:600;font-size:15px;
+    padding:12px 22px;border-radius:8px;cursor:pointer;border:1px solid transparent;
+    transition:transform .16s var(--ease),background .2s,border-color .2s,color .2s;white-space:nowrap}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:var(--accent-ink);transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:var(--text);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ============ HEADER ============ */
+  header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:22px}
+  .nav-links{display:flex;gap:32px;align-items:center}
+  .nav-links a{font-size:15px;font-weight:500;color:var(--muted);transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .lang{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-family:"Archivo",sans-serif;font-size:12.5px;font-weight:700}
+  .lang button{background:transparent;border:0;color:var(--muted);padding:7px 11px;cursor:pointer;transition:.2s}
+  .lang button[aria-pressed="true"]{background:var(--accent);color:#fff}
+  .nav .btn{padding:10px 18px}
+
+  /* ============ HERO ============ */
+  .hero{padding:78px 0 30px;background:
+      linear-gradient(180deg,var(--bg) 0%, var(--bg) 60%, var(--bg-alt) 100%)}
+  .hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:56px;align-items:center}
+  .hero h1{font-size:clamp(2.35rem,4.6vw,3.5rem);font-weight:800;max-width:15ch}
+  .hero h1 .u{color:var(--accent)}
+  .hero .lead{margin-top:22px;max-width:52ch;font-size:clamp(1.05rem,1.4vw,1.2rem);color:var(--muted)}
+  .hero .cta{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+  .hero .kicker{margin-bottom:20px;display:inline-flex;align-items:center;gap:11px}
+  .hero .kicker::before{content:"";width:26px;height:2px;background:var(--accent)}
+
+  /* hero dashboard panel */
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+  .panel-top{display:flex;align-items:center;gap:10px;padding:15px 18px;border-bottom:1px solid var(--line)}
+  .panel-top .pt-title{font-family:"Archivo",sans-serif;font-weight:700;font-size:14px;letter-spacing:.01em}
+  .panel-top .live{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;
+    font-family:"Archivo",sans-serif;letter-spacing:.06em;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface));
+    border:1px solid color-mix(in srgb,var(--accent) 22%,var(--line));padding:3px 9px;border-radius:999px;text-transform:uppercase}
+  .panel-top .live i{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+  .chart-wrap{padding:16px 18px 6px}
+  .chart-wrap svg{width:100%;height:auto;display:block}
+  .chart-wrap svg line{stroke:var(--line)}
+  .panel-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line)}
+  .ptile{background:var(--surface);padding:15px 16px}
+  .ptile .lbl{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-family:"Archivo",sans-serif}
+  .ptile .val{font-family:"Archivo",sans-serif;font-weight:700;font-size:1.02rem;margin-top:5px;display:flex;align-items:center;gap:7px}
+  .ptile .val .sp{width:34px;height:14px}
+  .dot-ok{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+
+  /* trust strip */
+  .trust{background:var(--bg-alt);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;padding:38px 0}
+  .stat{text-align:left;position:relative;padding-left:20px}
+  .stat::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:3px;border-radius:3px;background:var(--accent);opacity:.85}
+  .stat b{font-family:"Archivo",sans-serif;font-size:2rem;font-weight:800;color:var(--text);display:block;line-height:1}
+  .stat span{font-size:14px;color:var(--muted);margin-top:7px;display:block}
+
+  /* ============ SECTION SCAFFOLD ============ */
+  section{padding:88px 0}
+  .sec-head{max-width:66ch;margin-bottom:50px}
+  .sec-head .kicker{display:block;margin-bottom:15px}
+  .sec-head h2{font-size:clamp(1.9rem,3.3vw,2.6rem)}
+  .sec-head p{color:var(--muted);margin-top:16px;font-size:1.1rem}
+
+  /* ============ SERVICES ============ */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px;
+    box-shadow:var(--shadow-sm);transition:transform .22s var(--ease),box-shadow .22s,border-color .22s}
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--accent) 32%,var(--line))}
+  .card .ic{width:48px;height:48px;border-radius:11px;display:grid;place-items:center;margin-bottom:22px;
+    background:color-mix(in srgb,var(--accent) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--accent) 20%,var(--line))}
+  .card .ic svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.8}
+  .card .tag{font-family:"Archivo",sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .card h3{font-size:1.34rem;margin:6px 0 11px}
+  .card p{color:var(--muted);font-size:1rem}
+  .card ul{list-style:none;padding:0;margin:20px 0 0;display:flex;flex-direction:column;gap:11px}
+  .card li{font-size:.96rem;color:var(--text);display:flex;gap:11px;align-items:flex-start}
+  .card li svg{width:17px;height:17px;stroke:var(--accent);fill:none;stroke-width:2.4;flex:none;margin-top:4px}
+  .diff-card .num-tag{font-family:"Archivo",sans-serif;font-weight:800;font-size:1.15rem;color:var(--accent);display:block;margin-bottom:14px;letter-spacing:.02em}
+  .diff-card h3{font-size:1.2rem;margin:0 0 10px}
+
+  /* ============ APPROACH ============ */
+  .approach{background:var(--bg-alt);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;counter-reset:step}
+  .step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px;position:relative}
+  .step .num{font-family:"Archivo",sans-serif;font-size:13px;font-weight:800;color:#fff;background:var(--accent);
+    width:30px;height:30px;border-radius:8px;display:grid;place-items:center;margin-bottom:18px}
+  .step h3{font-size:1.14rem;margin-bottom:9px}
+  .step p{color:var(--muted);font-size:.96rem}
+
+  /* ============ IaC BAND ============ */
+  .iac-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .iac-list{display:flex;flex-direction:column;gap:8px;margin-top:24px}
+  .iac-item{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-top:1px solid var(--line)}
+  .iac-item:first-child{border-top:0}
+  .iac-item .k{width:40px;height:40px;flex:none;border-radius:10px;display:grid;place-items:center;
+    background:color-mix(in srgb,var(--accent) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--accent) 20%,var(--line))}
+  .iac-item .k svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.9}
+  .iac-item h4{margin:0 0 4px;font-size:1.06rem}
+  .iac-item p{color:var(--muted);font-size:.96rem}
+  .iac-visual{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:30px}
+  .iac-visual .vt{font-family:"Archivo",sans-serif;font-weight:700;font-size:14px;color:var(--muted);letter-spacing:.02em;margin-bottom:22px;display:flex;align-items:center;gap:9px}
+  .flow{display:flex;flex-direction:column;gap:12px}
+  .flow-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--bg-alt);font-weight:600;font-size:.96rem}
+  .flow-row .n{font-family:"Archivo",sans-serif;font-weight:800;color:var(--accent);font-size:.9rem}
+  .flow-row .tail{margin-left:auto;font-family:"Source Sans 3";font-size:.82rem;color:var(--muted);font-weight:500}
+  .flow-arrow{height:16px;width:2px;background:var(--line);margin:0 auto}
+
+  /* ============ ABOUT ============ */
+  .about{background:var(--bg)}
+  .about-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:56px;align-items:center}
+  .about-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:36px;box-shadow:var(--shadow)}
+  .about-card .logo{margin-bottom:20px}
+  .about-card .logo .word{font-size:2rem}
+  .about-card .logo .one{font-size:1rem}
+  .about-card .founder{display:flex;gap:15px;align-items:center;margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
+  .about-card .av{width:48px;height:48px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:"Archivo",sans-serif;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--ink),var(--accent))}
+  .about-card .founder b{display:block;font-size:1rem;font-family:"Archivo",sans-serif}
+  .about-card .founder span{font-size:.86rem;color:var(--muted)}
+  .about h2{font-size:clamp(1.9rem,3.2vw,2.5rem)}
+  .about .body p{color:var(--muted);margin-top:18px;font-size:1.06rem}
+  .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}
+  .chip{font-family:"Archivo",sans-serif;font-size:12.5px;font-weight:600;color:var(--text);border:1px solid var(--line);background:var(--bg-alt);border-radius:7px;padding:8px 13px}
+
+  /* ============ CONTACT ============ */
+  .contact{background:linear-gradient(150deg,var(--ink),var(--ink-2));color:#eef2fb;text-align:center;border-radius:0}
+  .contact .kicker{color:#8fb0ff}
+  .contact h2{font-size:clamp(2rem,3.6vw,2.9rem);color:#fff;margin-top:16px}
+  .contact p{color:#b3c0e0;max-width:54ch;margin:18px auto 0;font-size:1.1rem}
+  .contact .cta{margin-top:34px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .contact .btn-ghost{color:#eef2fb;border-color:rgba(255,255,255,.26)}
+  .contact .btn-ghost:hover{border-color:#fff;color:#fff}
+  .contact .meta{margin-top:26px;font-size:.95rem;color:#8b99bd;font-family:"Archivo",sans-serif;letter-spacing:.02em}
+
+  /* ============ FOOTER ============ */
+  footer{background:var(--ink-2);color:#93a1c4;padding:40px 0}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .foot .logo .word{font-size:1.28rem;--logo-fg:#eef2fb}
+  .foot .logo .v{background:linear-gradient(92deg,#eef2fb 0 48%,var(--brand-blue) 48% 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .foot small{font-size:13.5px}
+  .foot .fl{display:flex;gap:24px}
+  .foot .fl a{font-size:14px;color:#93a1c4;transition:.2s}
+  .foot .fl a:hover{color:#fff}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:960px){
+    .hero-grid,.iac-grid,.about-grid{grid-template-columns:1fr;gap:40px}
+    .hero .panel{max-width:520px}
+    .pillars,.pipeline{grid-template-columns:1fr 1fr}
+    .stats{grid-template-columns:1fr 1fr;gap:24px 28px}
+  }
+  @media (max-width:680px){
+    .nav-links,.nav .btn-primary{display:none}
+    .pillars,.pipeline,.stats{grid-template-columns:1fr}
+    section{padding:60px 0}
+    .hero{padding:52px 0 20px}
+  }
+</style>
+
+<!-- ============================= HEADER ============================= -->
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="logo" aria-label="DVOps One">
+      <span class="word">D<span class="v">V</span>OPS</span><span class="one">One</span>
+    </a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="#services" data-pt="Serviços" data-en="Services">Serviços</a>
+      <a href="#diferenciais" data-pt="Diferenciais" data-en="Why us">Diferenciais</a>
+      <a href="#approach" data-pt="Abordagem" data-en="Approach">Abordagem</a>
+      <a href="#about" data-pt="Sobre" data-en="About">Sobre</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang="pt" aria-pressed="true">PT</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a href="#contact" class="btn btn-primary" data-pt="Fale conosco" data-en="Contact us">Fale conosco</a>
+    </div>
+  </div>
+</header>
+
+<span id="top"></span>
+
+<!-- ============================= HERO ============================= -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="kicker" data-pt="DevOps · FinOps · Observabilidade" data-en="DevOps · FinOps · Observability">DevOps · FinOps · Observabilidade</span>
+      <h1 data-pt="Sua operação em nuvem estável, observável e com &lt;span class='u'&gt;custo sob controle&lt;/span&gt;."
+          data-en="Cloud operations that are stable, observable and &lt;span class='u'&gt;cost-controlled&lt;/span&gt;.">
+        Sua operação em nuvem estável, observável e com <span class="u">custo sob controle</span>.
+      </h1>
+      <p class="lead"
+         data-pt="A DVOps One não implementa apenas DevOps. Unimos DevOps, Observabilidade e FinOps em um único sistema — com método próprio e um arquiteto sênior no comando — para deixar seu ambiente eficiente, seguro e financeiramente previsível, em qualquer nuvem."
+         data-en="DVOps One doesn't just implement DevOps. We combine DevOps, Observability and FinOps into a single system — with our own method and a senior architect in charge — to make your environment efficient, secure and financially predictable, on any cloud.">
+        A DVOps One não implementa apenas DevOps. Unimos DevOps, Observabilidade e FinOps em um único sistema — com método próprio e um arquiteto sênior no comando — para deixar seu ambiente eficiente, seguro e financeiramente previsível, em qualquer nuvem.
+      </p>
+      <div class="cta">
+        <a href="#contact" class="btn btn-primary" data-pt="Fale com um especialista" data-en="Talk to a specialist">Fale com um especialista</a>
+        <a href="#services" class="btn btn-ghost" data-pt="Conheça os serviços" data-en="Explore services">Conheça os serviços</a>
+      </div>
+    </div>
+
+    <!-- decorative observability panel -->
+    <div class="panel reveal" aria-hidden="true">
+      <div class="panel-top">
+        <span class="dot-ok"></span>
+        <span class="pt-title">Painel de valor</span>
+        <span class="live"><i></i>Live</span>
+      </div>
+      <div class="chart-wrap">
+        <svg viewBox="0 0 340 132" preserveAspectRatio="none" role="img">
+          <defs>
+            <linearGradient id="area" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#1e56e6" stop-opacity="0.20"/>
+              <stop offset="1" stop-color="#1e56e6" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="34" x2="340" y2="34" stroke="#e6eaf1" stroke-width="1"/>
+          <line x1="0" y1="70" x2="340" y2="70" stroke="#e6eaf1" stroke-width="1"/>
+          <line x1="0" y1="106" x2="340" y2="106" stroke="#e6eaf1" stroke-width="1"/>
+          <path d="M0,96 C30,90 45,70 70,72 C98,74 110,50 138,52 C165,54 178,80 205,74 C232,68 246,40 272,38 C300,36 316,52 340,44 L340,132 L0,132 Z" fill="url(#area)"/>
+          <path d="M0,96 C30,90 45,70 70,72 C98,74 110,50 138,52 C165,54 178,80 205,74 C232,68 246,40 272,38 C300,36 316,52 340,44" fill="none" stroke="#1e56e6" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cx="340" cy="44" r="4.5" fill="#1e56e6"/>
+        </svg>
+      </div>
+      <div class="panel-tiles">
+        <div class="ptile"><span class="lbl">Entrega</span><span class="val"><span class="dot-ok"></span>Deploy</span></div>
+        <div class="ptile"><span class="lbl">Confiabilidade</span><span class="val"><span class="dot-ok"></span>SLO</span></div>
+        <div class="ptile"><span class="lbl">Custo</span><span class="val"><span class="dot-ok"></span>&#8595;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= TRUST STRIP ============================= -->
+<div class="trust">
+  <div class="wrap stats">
+    <div class="stat"><b>30+</b><span data-pt="anos de experiência sênior" data-en="years of senior experience">anos de experiência sênior</span></div>
+    <div class="stat"><b>Tripé</b><span data-pt="DevOps + Obs + FinOps, integrados" data-en="DevOps + Obs + FinOps, integrated">DevOps + Obs + FinOps, integrados</span></div>
+    <div class="stat"><b>Multicloud</b><span data-pt="Azure · AWS · híbrido · on-prem" data-en="Azure · AWS · hybrid · on-prem">Azure · AWS · híbrido · on-prem</span></div>
+    <div class="stat"><b>Método</b><span data-pt="próprio e documentado" data-en="own and documented">próprio e documentado</span></div>
+  </div>
+</div>
+
+<!-- ============================= SERVICES ============================= -->
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker" data-pt="O que fazemos" data-en="What we do">O que fazemos</span>
+      <h2 data-pt="Um sistema único, não três serviços soltos" data-en="One system, not three separate services">Um sistema único, não três serviços soltos</h2>
+      <p data-pt="DevOps como base, FinOps para governar custos e Observabilidade como cultura — entregues juntos, conectando cada deploy à confiabilidade e ao custo. Boas práticas, automação e segurança por padrão, em qualquer ambiente."
+         data-en="DevOps as the foundation, FinOps to govern cost and Observability as culture — delivered together, linking every deploy to reliability and cost. Best practices, automation and security by default, across any environment.">
+        DevOps como base, FinOps para governar custos e Observabilidade como cultura — entregues juntos, conectando cada deploy à confiabilidade e ao custo. Boas práticas, automação e segurança por padrão, em qualquer ambiente.
+      </p>
+    </div>
+
+    <div class="pillars">
+      <article class="card reveal">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="18" cy="18" r="2.4"/></svg></div>
+        <span class="tag">DevOps</span>
+        <h3 data-pt="DevOps & DevSecOps" data-en="DevOps & DevSecOps">DevOps &amp; DevSecOps</h3>
+        <p data-pt="Frameworks e práticas de DevOps com segurança embarcada por padrão: CI/CD, cultura de colaboração e reestruturação de ambientes — DevSecOps desde o design, não como projeto à parte."
+           data-en="DevOps frameworks and practices with security built in by default: CI/CD, a culture of collaboration and environment restructuring — DevSecOps from design, not as a separate project.">
+          Frameworks e práticas de DevOps com segurança embarcada por padrão: CI/CD, cultura de colaboração e reestruturação de ambientes — DevSecOps desde o design, não como projeto à parte.
+        </p>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span data-pt="Pipelines CI/CD" data-en="CI/CD pipelines">Pipelines CI/CD</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span data-pt="DevSecOps por padrão (SBOM · SAST · SCA)" data-en="DevSecOps by default (SBOM · SAST · SCA)">DevSecOps por padrão (SBOM · SAST · SCA)</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span data-pt="Reestruturação de ambientes" data-en="Environment restructuring">Reestruturação de ambientes</span></li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M16 7.5c0-1.7-1.8-2.8-4-2.8S8 5.8 8 7.5s1.8 2.5 4 2.9 4 1.2 4 2.9-1.8 2.8-4 2.8-4-1.1-4-2.8"/></svg></div>
+        <span class="tag">FinOps</span>
+        <h3 data-pt="FinOps" data-en="FinOps">FinOps</h3>
+        <p data-pt="FinOps como porta de entrada: começamos quantificando o desperdício de nuvem para que a evolução se pague com a própria economia. Visibilidade e governança contínuas de custos."
+           data-en="FinOps as the entry point: we start by quantifying cloud waste so the journey pays for itself through the savings. Continuous cost visibility and governance.">
+          FinOps como porta de entrada: começamos quantificando o desperdício de nuvem para que a evolução se pague com a própria economia. Visibilidade e governança contínuas de custos.
+        </p>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span data-pt="Diagnóstico de desperdício" data-en="Waste assessment">Diagnóstico de desperdício</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span data-pt="Otimização e rightsizing" data-en="Optimization and rightsizing">Otimização e rightsizing</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span data-pt="Governança contínua de custos" data-en="Continuous cost governance">Governança contínua de custos</span></li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h4l2.5-7 5 15 2.5-8H21"/></svg></div>
+        <span class="tag">Observability</span>
+        <h3 data-pt="Observabilidade" data-en="Observability">Observabilidade</h3>
+        <p data-pt="Observabilidade que fala a língua do negócio: SLOs por serviço, métricas DORA e custo por serviço no mesmo lugar — saúde técnica traduzida para a diretoria."
+           data-en="Observability that speaks the language of the business: per-service SLOs, DORA metrics and cost-per-service in one place — technical health translated for the board.">
+          Observabilidade que fala a língua do negócio: SLOs por serviço, métricas DORA e custo por serviço no mesmo lugar — saúde técnica traduzida para a diretoria.
+        </p>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span data-pt="SLOs e métricas DORA" data-en="SLOs and DORA metrics">SLOs e métricas DORA</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span data-pt="Custo por serviço" data-en="Cost per service">Custo por serviço</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span data-pt="Decisão orientada a dados" data-en="Data-driven decisions">Decisão orientada a dados</span></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= DIFERENCIAIS ============================= -->
+<section id="diferenciais">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker" data-pt="Por que a DVOps One" data-en="Why DVOps One">Por que a DVOps One</span>
+      <h2 data-pt="O que nos diferencia do mercado" data-en="What sets us apart">O que nos diferencia do mercado</h2>
+      <p data-pt="O mercado vende o mesmo pacote genérico, ancorado em um só provedor. Nós entregamos um sistema integrado, com método próprio e senioridade real."
+         data-en="The market sells the same generic package, anchored to a single provider. We deliver an integrated system, with our own method and real seniority.">
+        O mercado vende o mesmo pacote genérico, ancorado em um só provedor. Nós entregamos um sistema integrado, com método próprio e senioridade real.
+      </p>
+    </div>
+
+    <div class="pillars">
+      <article class="card diff-card reveal">
+        <span class="num-tag">01</span>
+        <h3 data-pt="Tripé integrado" data-en="Integrated tripod">Tripé integrado</h3>
+        <p data-pt="DevOps, Observabilidade e FinOps como um único sistema, conectando deploy → confiabilidade → custo — não como add-ons soltos."
+           data-en="DevOps, Observability and FinOps as a single system, linking deploy → reliability → cost — not loose add-ons.">
+          DevOps, Observabilidade e FinOps como um único sistema, conectando deploy → confiabilidade → custo — não como add-ons soltos.
+        </p>
+      </article>
+      <article class="card diff-card reveal">
+        <span class="num-tag">02</span>
+        <h3 data-pt="FinOps como porta de entrada" data-en="FinOps as the entry point">FinOps como porta de entrada</h3>
+        <p data-pt="Entramos pelo bolso: quantificamos o desperdício de nuvem para que a evolução se pague com a economia gerada."
+           data-en="We start with the wallet: we quantify cloud waste so the journey pays for itself through the savings.">
+          Entramos pelo bolso: quantificamos o desperdício de nuvem para que a evolução se pague com a economia gerada.
+        </p>
+      </article>
+      <article class="card diff-card reveal">
+        <span class="num-tag">03</span>
+        <h3 data-pt="Observabilidade de negócio" data-en="Business observability">Observabilidade de negócio</h3>
+        <p data-pt="SLOs, métricas DORA e custo por serviço no mesmo painel: a saúde técnica em linguagem de diretoria."
+           data-en="SLOs, DORA metrics and cost-per-service in one panel: technical health in board-level language.">
+          SLOs, métricas DORA e custo por serviço no mesmo painel: a saúde técnica em linguagem de diretoria.
+        </p>
+      </article>
+      <article class="card diff-card reveal">
+        <span class="num-tag">04</span>
+        <h3 data-pt="Maturidade progressiva" data-en="Progressive maturity">Maturidade progressiva</h3>
+        <p data-pt="Evolução em níveis, em assinatura mensal previsível, sem exigir uma operação de SRE completa desde o início."
+           data-en="Level-by-level evolution, on a predictable monthly subscription, without requiring a full SRE operation upfront.">
+          Evolução em níveis, em assinatura mensal previsível, sem exigir uma operação de SRE completa desde o início.
+        </p>
+      </article>
+      <article class="card diff-card reveal">
+        <span class="num-tag">05</span>
+        <h3 data-pt="Vendor-agnostic e regulados" data-en="Vendor-agnostic and regulated">Vendor-agnostic e regulados</h3>
+        <p data-pt="Multicloud real (AWS · Azure · GCP · OCI), híbrido e on-prem — pronto para setores regulados e ambientes legados."
+           data-en="Real multicloud (AWS · Azure · GCP · OCI), hybrid and on-prem — ready for regulated sectors and legacy environments.">
+          Multicloud real (AWS · Azure · GCP · OCI), híbrido e on-prem — pronto para setores regulados e ambientes legados.
+        </p>
+      </article>
+      <article class="card diff-card reveal">
+        <span class="num-tag">06</span>
+        <h3 data-pt="Método próprio + senioridade" data-en="Own method + seniority">Método próprio + senioridade</h3>
+        <p data-pt="Framework documentado e transparente, com capacitação do seu time e um arquiteto sênior (30+ anos) no comando — não um squad genérico."
+           data-en="A documented, transparent framework, with training for your team and a senior architect (30+ years) in charge — not a generic squad.">
+          Framework documentado e transparente, com capacitação do seu time e um arquiteto sênior (30+ anos) no comando — não um squad genérico.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= APPROACH ============================= -->
+<section id="approach" class="approach">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker" data-pt="Como trabalhamos" data-en="How we work">Como trabalhamos</span>
+      <h2 data-pt="Do diagnóstico à observabilidade contínua" data-en="From assessment to continuous observability">Do diagnóstico à observabilidade contínua</h2>
+      <p data-pt="Um método claro e repetível para reestruturar ambientes e sustentar a mudança com cultura e automação."
+         data-en="A clear, repeatable method to restructure environments and sustain the change through culture and automation.">
+        Um método claro e repetível para reestruturar ambientes e sustentar a mudança com cultura e automação.
+      </p>
+    </div>
+
+    <div class="pipeline">
+      <div class="step reveal">
+        <div class="num">1</div>
+        <h3 data-pt="Diagnóstico" data-en="Assess">Diagnóstico</h3>
+        <p data-pt="Mapeamos o ambiente, os gargalos e o desperdício de nuvem — começando pelo FinOps, sem suposições." data-en="We map the environment, bottlenecks and cloud waste — starting with FinOps, no assumptions.">Mapeamos o ambiente, os gargalos e o desperdício de nuvem — começando pelo FinOps, sem suposições.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">2</div>
+        <h3 data-pt="Reestruturação" data-en="Restructure">Reestruturação</h3>
+        <p data-pt="Aplicamos boas práticas e desenhamos uma arquitetura mais ágil e segura." data-en="We apply best practices and design a more agile, secure architecture.">Aplicamos boas práticas e desenhamos uma arquitetura mais ágil e segura.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">3</div>
+        <h3 data-pt="Automação (IaC)" data-en="Automate (IaC)">Automação (IaC)</h3>
+        <p data-pt="Codificamos a infraestrutura para ambientes reproduzíveis e melhor custo-benefício." data-en="We codify infrastructure for reproducible environments and better cost-benefit.">Codificamos a infraestrutura para ambientes reproduzíveis e melhor custo-benefício.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">4</div>
+        <h3 data-pt="Observabilidade" data-en="Observe">Observabilidade</h3>
+        <p data-pt="Instrumentamos tudo e instalamos a cultura para a melhoria contínua." data-en="We instrument everything and embed the culture for continuous improvement.">Instrumentamos tudo e instalamos a cultura para a melhoria contínua.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= IaC BAND ============================= -->
+<section id="iac" class="about">
+  <div class="wrap iac-grid">
+    <div class="reveal">
+      <span class="kicker" data-pt="Infraestrutura como Código" data-en="Infrastructure as Code">Infraestrutura como Código</span>
+      <h2 style="font-size:clamp(1.8rem,3.1vw,2.4rem);margin-top:15px" data-pt="Ambientes reproduzíveis, do código à operação" data-en="Reproducible environments, from code to operation">Ambientes reproduzíveis, do código à operação</h2>
+      <p style="color:var(--muted);margin-top:16px;font-size:1.06rem" data-pt="IaC é a espinha dorsal da nossa entrega: ambientes versionados, auditáveis e recriáveis, com mais agilidade, governança e melhor custo-benefício."
+         data-en="IaC is the backbone of our delivery: versioned, auditable and reproducible environments, with more agility, governance and better cost-benefit.">
+        IaC é a espinha dorsal da nossa entrega: ambientes versionados, auditáveis e recriáveis, com mais agilidade, governança e melhor custo-benefício.
+      </p>
+      <div class="iac-list">
+        <div class="iac-item">
+          <div class="k" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/></svg></div>
+          <div><h4 data-pt="Tudo versionado" data-en="Everything versioned">Tudo versionado</h4>
+          <p data-pt="Infraestrutura em código, revisada como software e rastreável de ponta a ponta." data-en="Infrastructure as code, reviewed like software and traceable end to end.">Infraestrutura em código, revisada como software e rastreável de ponta a ponta.</p></div>
+        </div>
+        <div class="iac-item">
+          <div class="k" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg></div>
+          <div><h4 data-pt="Reproduzível" data-en="Reproducible">Reproduzível</h4>
+          <p data-pt="Recrie qualquer ambiente de forma idêntica, em minutos, em qualquer nuvem." data-en="Rebuild any environment identically, in minutes, on any cloud.">Recrie qualquer ambiente de forma idêntica, em minutos, em qualquer nuvem.</p></div>
+        </div>
+        <div class="iac-item">
+          <div class="k" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg></div>
+          <div><h4 data-pt="Seguro e governado" data-en="Secure and governed">Seguro e governado</h4>
+          <p data-pt="Políticas, governança e segurança embarcadas desde a primeira linha de código." data-en="Policy, governance and security embedded from the first line of code.">Políticas, governança e segurança embarcadas desde a primeira linha de código.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="iac-visual reveal" aria-hidden="true">
+      <div class="vt"><span class="dot-ok"></span>Pipeline de entrega</div>
+      <div class="flow">
+        <div class="flow-row"><span class="n">01</span><span>Código (IaC)</span><span class="tail">Terraform</span></div>
+        <div class="flow-arrow"></div>
+        <div class="flow-row"><span class="n">02</span><span>Validação e política</span><span class="tail">CI · policy</span></div>
+        <div class="flow-arrow"></div>
+        <div class="flow-row"><span class="n">03</span><span>Provisionamento</span><span class="tail">Azure · AWS</span></div>
+        <div class="flow-arrow"></div>
+        <div class="flow-row"><span class="n">04</span><span>Observabilidade</span><span class="tail">métricas · logs</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= ABOUT ============================= -->
+<section id="about" class="approach">
+  <div class="wrap about-grid">
+    <div class="about-card reveal">
+      <span class="logo"><span class="word">D<span class="v">V</span>OPS</span><span class="one">One</span></span>
+      <p style="color:var(--muted);font-size:1rem" data-pt="Engenharia de plataforma orientada a observabilidade, para empresas que querem escalar com controle."
+         data-en="Observability-driven platform engineering, for companies that want to scale under control.">
+        Engenharia de plataforma orientada a observabilidade, para empresas que querem escalar com controle.
+      </p>
+      <div class="founder">
+        <div class="av">RS</div>
+        <div>
+          <b>Rodrigo Saldanha e Silva</b>
+          <span data-pt="Fundador · Arquiteto de Soluções" data-en="Founder · Solutions Architect">Fundador · Arquiteto de Soluções</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="body reveal">
+      <span class="kicker" data-pt="Sobre a DVOps One" data-en="About DVOps One">Sobre a DVOps One</span>
+      <h2 style="margin-top:15px" data-pt="Experiência de verdade, aplicada ao seu ambiente" data-en="Real experience, applied to your environment">Experiência de verdade, aplicada ao seu ambiente</h2>
+      <p data-pt="A DVOps One nasce de mais de 30 anos de experiência em arquitetura de soluções, infraestrutura de nuvem e DevSecOps, em ambientes Azure, AWS e multicloud. Ajudamos empresas a implementar boas práticas e a reestruturar ambientes, sempre conectados a uma cultura de observabilidade."
+         data-en="DVOps One is built on 30+ years of experience in solutions architecture, cloud infrastructure and DevSecOps, across Azure, AWS and multicloud environments. We help companies implement best practices and restructure environments, always connected to an observability culture.">
+        A DVOps One nasce de mais de 30 anos de experiência em arquitetura de soluções, infraestrutura de nuvem e DevSecOps, em ambientes Azure, AWS e multicloud. Ajudamos empresas a implementar boas práticas e a reestruturar ambientes, sempre conectados a uma cultura de observabilidade.
+      </p>
+      <p data-pt="Trabalhamos com método próprio e Infraestrutura como Código, de PMEs a ambientes regulados — do diagnóstico à operação contínua, com um arquiteto sênior no comando e capacitação do seu time ao longo do caminho."
+         data-en="We work with our own method and Infrastructure as Code, from SMBs to regulated environments — from assessment to continuous operation, with a senior architect in charge and hands-on training for your team along the way.">
+        Trabalhamos com método próprio e Infraestrutura como Código, de PMEs a ambientes regulados — do diagnóstico à operação contínua, com um arquiteto sênior no comando e capacitação do seu time ao longo do caminho.
+      </p>
+      <div class="chips">
+        <span class="chip">Azure</span><span class="chip">AWS</span><span class="chip">Multicloud</span>
+        <span class="chip">DevSecOps</span><span class="chip">CI/CD</span><span class="chip">Terraform / IaC</span>
+        <span class="chip">FinOps</span><span class="chip">Observability</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= CONTACT ============================= -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <span class="kicker" data-pt="Vamos conversar" data-en="Let's talk">Vamos conversar</span>
+    <h2 data-pt="Pronto para reestruturar seu ambiente?" data-en="Ready to restructure your environment?">Pronto para reestruturar seu ambiente?</h2>
+    <p data-pt="Conte onde você quer chegar — DevOps, FinOps ou Observabilidade — e desenhamos o caminho junto com o seu time."
+       data-en="Tell us where you want to get to — DevOps, FinOps or Observability — and we'll design the path together with your team.">
+      Conte onde você quer chegar — DevOps, FinOps ou Observabilidade — e desenhamos o caminho junto com o seu time.
+    </p>
+    <div class="cta">
+      <a href="mailto:dvopsone@dvopsone.com" class="btn btn-primary">dvopsone@dvopsone.com</a>
+      <a href="#" data-linkedin class="btn btn-ghost" data-pt="LinkedIn da empresa" data-en="Company LinkedIn">LinkedIn da empresa</a>
+    </div>
+    <div class="meta">dvopsone.com</div>
+  </div>
+</section>
+
+<!-- ============================= FOOTER ============================= -->
+<footer>
+  <div class="wrap foot">
+    <a href="#top" class="logo"><span class="word">D<span class="v">V</span>OPS</span><span class="one">One</span></a>
+    <div class="fl">
+      <a href="#services" data-pt="Serviços" data-en="Services">Serviços</a>
+      <a href="#approach" data-pt="Abordagem" data-en="Approach">Abordagem</a>
+      <a href="#about" data-pt="Sobre" data-en="About">Sobre</a>
+      <a href="mailto:dvopsone@dvopsone.com">E-mail</a>
+    </div>
+    <small data-pt="© 2026 DVOps One · dvopsone.com" data-en="© 2026 DVOps One · dvopsone.com">© 2026 DVOps One · dvopsone.com</small>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nodes = document.querySelectorAll('[data-pt]');
+  function setLang(lang){
+    document.documentElement.lang = (lang==='en')?'en':'pt-BR';
+    nodes.forEach(function(n){
+      var val = n.getAttribute('data-'+lang);
+      if(val==null) return;
+      if(val.indexOf('&lt;')>-1 || val.indexOf('<')>-1){ n.innerHTML = val.replace(/&lt;/g,'<').replace(/&gt;/g,'>'); }
+      else { n.textContent = val; }
+    });
+    document.querySelectorAll('.lang button').forEach(function(b){
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang')===lang ? 'true':'false');
+    });
+    try{ localStorage.setItem('dvops-lang', lang); }catch(e){}
+  }
+  document.querySelectorAll('.lang button').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.getAttribute('data-lang')); });
+  });
+  var saved='pt';
+  try{ saved = localStorage.getItem('dvops-lang') || 'pt'; }catch(e){}
+  setLang(saved);
+
+  var revealEls = document.querySelectorAll('.reveal');
+  function revealAll(){ revealEls.forEach(function(el){ el.classList.add('in'); }); }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    },{threshold:.08, rootMargin:'0px 0px -6% 0px'});
+    revealEls.forEach(function(el){ io.observe(el); });
+    setTimeout(revealAll, 2600);
+    window.addEventListener('load', function(){ setTimeout(revealAll, 400); });
+  } else { revealAll(); }
+})();
+</script>
