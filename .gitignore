@@ -1,0 +1,13 @@
+# Arquivos temporários do Office
+~$*
+*.tmp
+
+# Renders/temporários
+*.pdf.tmp
+page-*.jpg
+cover-*.jpg
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
